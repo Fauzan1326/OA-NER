@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arthroscan.ner/schemas/v1/sensor.schema.json",
+  "title": "SensorPacket",
+  "description": "Universal Data Contract sensor packet for ARTHROSCAN-NER v1.0",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["1.0"] },
+    "subject_id": { "type": "string" },
+    "session_id": { "type": "string" },
+    "sensor_id": { "type": "string" },
+    "modality": {
+      "type": "string",
+      "enum": ["IMU", "VAG", "sEMG", "RF", "CONTEXT"]
+    },
+    "timestamp": {
+      "type": "object",
+      "properties": {
+        "device_time_ms": { "type": "integer" },
+        "sequence_number": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["device_time_ms", "sequence_number"]
+    },
+    "sampling": {
+      "type": "object",
+      "properties": {
+        "rate_hz": { "type": "number", "minimum": 0.1 }
+      },
+      "required": ["rate_hz"]
+    },
+    "channels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "values": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 1
+    },
+    "units": { "type": "string" },
+    "device": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["DISCOVERING", "CONNECTING", "CONNECTED", "CALIBRATING", "STREAMING", "PAUSED", "DISCONNECTED", "ERROR", "RECONNECTING"]
+        },
+        "firmware_version": { "type": "string" }
+      },
+      "required": ["status"]
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["PASS", "WARNING", "FAIL"] },
+        "score": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      },
+      "required": ["status", "score"]
+    }
+  },
+  "required": [
+    "schema_version",
+    "subject_id",
+    "session_id",
+    "sensor_id",
+    "modality",
+    "timestamp",
+    "sampling",
+    "channels",
+    "values",
+    "units",
+    "device",
+    "quality"
+  ]
+}

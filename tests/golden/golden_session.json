@@ -1,0 +1,108 @@
+{
+  "test_id": "GOLDEN_SESSION_V1",
+  "schema_version": "1.0",
+  "subject_id": "SUBJ_GOLDEN_26004",
+  "session_id": "SESSION_GOLDEN_001",
+  "sensor_packets": [
+    {
+      "schema_version": "1.0",
+      "subject_id": "SUBJ_GOLDEN_26004",
+      "session_id": "SESSION_GOLDEN_001",
+      "sensor_id": "IMU_TIBIA_01",
+      "modality": "IMU",
+      "timestamp": {
+        "device_time_ms": 1774000000000,
+        "sequence_number": 1024
+      },
+      "sampling": {
+        "rate_hz": 100.0
+      },
+      "channels": ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"],
+      "values": [0.012, 0.981, -0.045, 0.001, -0.004, 0.008],
+      "units": "g,rad/s",
+      "device": {
+        "status": "STREAMING",
+        "firmware_version": "sim-1.0"
+      },
+      "quality": {
+        "status": "PASS",
+        "score": 0.99
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "subject_id": "SUBJ_GOLDEN_26004",
+      "session_id": "SESSION_GOLDEN_001",
+      "sensor_id": "VAG_PATELLAR_01",
+      "modality": "VAG",
+      "timestamp": {
+        "device_time_ms": 1774000000000,
+        "sequence_number": 20480
+      },
+      "sampling": {
+        "rate_hz": 2000.0
+      },
+      "channels": ["vag_acoustic"],
+      "values": [0.038],
+      "units": "mV",
+      "device": {
+        "status": "STREAMING",
+        "firmware_version": "sim-1.0"
+      },
+      "quality": {
+        "status": "PASS",
+        "score": 0.96
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "subject_id": "SUBJ_GOLDEN_26004",
+      "session_id": "SESSION_GOLDEN_001",
+      "sensor_id": "SEMG_QUAD_01",
+      "modality": "sEMG",
+      "timestamp": {
+        "device_time_ms": 1774000000000,
+        "sequence_number": 10240
+      },
+      "sampling": {
+        "rate_hz": 1000.0
+      },
+      "channels": ["rectus_femoris", "vastus_medialis"],
+      "values": [0.085, 0.072],
+      "units": "uV",
+      "device": {
+        "status": "STREAMING",
+        "firmware_version": "sim-1.0"
+      },
+      "quality": {
+        "status": "PASS",
+        "score": 0.94
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "subject_id": "SUBJ_GOLDEN_26004",
+      "session_id": "SESSION_GOLDEN_001",
+      "sensor_id": "RF_MEDIAL_01",
+      "modality": "RF",
+      "timestamp": {
+        "device_time_ms": 1774000000000,
+        "sequence_number": 102
+      },
+      "sampling": {
+        "rate_hz": 10.0
+      },
+      "channels": ["s11_mag_db", "resonance_ghz", "phase_deg"],
+      "values": [-18.42, 2.449, -45.2],
+      "units": "dB,GHz,deg",
+      "device": {
+        "status": "STREAMING",
+        "firmware_version": "sim-1.0"
+      },
+      "quality": {
+        "status": "PASS",
+        "score": 0.92
+      }
+    }
+  ]
+}

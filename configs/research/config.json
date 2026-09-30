@@ -1,0 +1,19 @@
+{
+  "profile": "RESEARCH",
+  "data_source": "FILE_REPLAY",
+  "sampling_rates_hz": {
+    "IMU": 200,
+    "VAG": 4000,
+    "sEMG": 2000,
+    "RF": 50
+  },
+  "buffer_size": 1024,
+  "uncertainty_threshold": 0.50,
+  "quality_gate_threshold": 0.70,
+  "rf_center_freq_mhz": 2450.0,
+  "rf_bandwidth_mhz": 500.0,
+  "disclaimer_required": true,
+  "log_level": "DEBUG",
+  "offline_mode_forced": false,
+  "version": "1.0.0"
+}

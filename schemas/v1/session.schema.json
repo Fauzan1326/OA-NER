@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arthroscan.ner/schemas/v1/session.schema.json",
+  "title": "SessionRecord",
+  "description": "Screening session protocol metadata",
+  "type": "object",
+  "properties": {
+    "session_id": { "type": "string" },
+    "patient_id": { "type": "string" },
+    "operator_id": { "type": "string" },
+    "device_id": { "type": "string" },
+    "configuration_profile": { "type": "string", "enum": ["DEMO", "RESEARCH", "HARDWARE", "PRODUCTION"] },
+    "data_source": { "type": "string", "enum": ["SYNTHETIC", "FILE_REPLAY", "HIL", "PHYSICAL_SENSOR"] },
+    "start_timestamp": { "type": "integer" },
+    "end_timestamp": { "type": "integer" },
+    "active_modalities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "calibration_status": { "type": "string", "enum": ["CALIBRATED", "UNCALIBRATED", "EXPIRED"] },
+    "schema_version": { "type": "string" }
+  },
+  "required": ["session_id", "patient_id", "configuration_profile", "data_source", "schema_version"]
+}

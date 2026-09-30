@@ -1,0 +1,28 @@
+{
+  "golden_vector_id": "GOLDEN_FEATURES_V1",
+  "feature_schema_version": "1.0",
+  "numerical_tolerance_epsilon": 0.00001,
+  "modality_features": {
+    "IMU": {
+      "mean_acc_mag": 0.98215,
+      "peak_angular_velocity": 0.15042,
+      "flexion_extension_rom_deg": 68.45,
+      "cadence_steps_per_min": 88.2
+    },
+    "VAG": {
+      "acoustic_crepitus_energy": 0.00142,
+      "spectral_centroid_hz": 245.8,
+      "zero_crossing_rate": 182.4
+    },
+    "sEMG": {
+      "co_contraction_index": 0.428,
+      "rectus_femoris_rms": 0.0821,
+      "activation_onset_latency_ms": 12.5
+    },
+    "RF": {
+      "s11_min_magnitude_db": -18.42,
+      "resonance_frequency_ghz": 2.449,
+      "q_factor_estimate": 14.85
+    }
+  }
+}

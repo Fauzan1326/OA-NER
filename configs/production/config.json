@@ -1,0 +1,20 @@
+{
+  "profile": "PRODUCTION",
+  "data_source": "PHYSICAL_SENSOR",
+  "sampling_rates_hz": {
+    "IMU": 100,
+    "VAG": 2000,
+    "sEMG": 1000,
+    "RF": 20
+  },
+  "buffer_size": 512,
+  "sensor_timeout_ms": 2500,
+  "uncertainty_threshold": 0.55,
+  "quality_gate_threshold": 0.75,
+  "rf_center_freq_mhz": 2450.0,
+  "rf_bandwidth_mhz": 250.0,
+  "disclaimer_required": true,
+  "log_level": "WARNING",
+  "offline_mode_forced": true,
+  "version": "1.0.0"
+}

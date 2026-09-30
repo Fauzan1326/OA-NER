@@ -1,0 +1,35 @@
+{
+  "golden_vector_id": "GOLDEN_PREDICTIONS_V1",
+  "schema_version": "1.0",
+  "numerical_tolerance_epsilon": 0.00001,
+  "modality_predictions": {
+    "IMU": {
+      "modality": "IMU",
+      "risk_probability": 0.325,
+      "confidence": 0.88,
+      "quality_score": 0.99,
+      "model_version": "1.0.0"
+    },
+    "VAG": {
+      "modality": "VAG",
+      "risk_probability": 0.412,
+      "confidence": 0.85,
+      "quality_score": 0.96,
+      "model_version": "1.0.0"
+    },
+    "sEMG": {
+      "modality": "sEMG",
+      "risk_probability": 0.298,
+      "confidence": 0.82,
+      "quality_score": 0.94,
+      "model_version": "1.0.0"
+    },
+    "RF": {
+      "modality": "RF",
+      "risk_probability": 0.450,
+      "confidence": 0.70,
+      "quality_score": 0.92,
+      "model_version": "1.0.0"
+    }
+  }
+}

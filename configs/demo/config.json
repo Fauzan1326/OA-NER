@@ -1,0 +1,19 @@
+{
+  "profile": "DEMO",
+  "data_source": "SYNTHETIC",
+  "sampling_rates_hz": {
+    "IMU": 100,
+    "VAG": 2000,
+    "sEMG": 1000,
+    "RF": 10
+  },
+  "buffer_size": 256,
+  "uncertainty_threshold": 0.65,
+  "quality_gate_threshold": 0.50,
+  "rf_center_freq_mhz": 2450.0,
+  "rf_bandwidth_mhz": 200.0,
+  "disclaimer_required": true,
+  "log_level": "DEBUG",
+  "offline_mode_forced": true,
+  "version": "1.0.0"
+}

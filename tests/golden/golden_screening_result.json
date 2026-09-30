@@ -1,0 +1,17 @@
+{
+  "golden_vector_id": "GOLDEN_SCREENING_RESULT_V1",
+  "schema_version": "1.0",
+  "session_id": "SESSION_GOLDEN_001",
+  "subject_id": "SUBJ_GOLDEN_26004",
+  "risk_tier": "MODERATE_SCREENING_RISK",
+  "risk_score": 0.371,
+  "confidence": 0.84,
+  "uncertainty": 0.32,
+  "evidence_coverage": "4 / 4 modalities (IMU, VAG, sEMG, RF)",
+  "available_modalities": ["IMU", "VAG", "sEMG", "RF"],
+  "signal_quality_summary": "GOOD",
+  "screening_interpretation": "Multimodal sensor pattern exhibits moderate divergence from nominal healthy reference gait and acoustic baseline. Clinical evaluation recommended.",
+  "referral_recommendation": "CLINICAL_EVALUATION_RECOMMENDED",
+  "is_synthetic": true,
+  "disclaimer": "RESEARCH & SCREENING PROTOTYPE ONLY — NOT A CLINICAL DIAGNOSIS — ILLUSTRATIVE SIMULATION"
+}

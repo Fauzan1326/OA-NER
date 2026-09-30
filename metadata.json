@@ -1,0 +1,6 @@
+{
+  "name": "Arthroscan",
+  "description": "AI-assisted multimodal musculoskeletal osteoarthritis risk screening and clinical research platform (SIH26004).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

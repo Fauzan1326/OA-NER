@@ -1,0 +1,50 @@
+{
+  "registry_version": "1.0",
+  "canonical_runtime": "ONNX_RUNTIME",
+  "models": [
+    {
+      "model_id": "arthroscan_imu_v1",
+      "model_version": "1.0.0",
+      "artifact": "imu_classifier_v1.onnx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modality": "IMU",
+      "feature_schema_version": "1.0",
+      "preprocessing_version": "1.0",
+      "input_dimensions": [1, 18],
+      "status": "VALIDATED"
+    },
+    {
+      "model_id": "arthroscan_vag_v1",
+      "model_version": "1.0.0",
+      "artifact": "vag_acoustic_v1.onnx",
+      "sha256": "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e",
+      "modality": "VAG",
+      "feature_schema_version": "1.0",
+      "preprocessing_version": "1.0",
+      "input_dimensions": [1, 24],
+      "status": "VALIDATED"
+    },
+    {
+      "model_id": "arthroscan_semg_v1",
+      "model_version": "1.0.0",
+      "artifact": "semg_activation_v1.onnx",
+      "sha256": "c83b8b15d0da4c6ec08a1c97a55c2763f0fdc45ab8383a1a473f628468753232",
+      "modality": "sEMG",
+      "feature_schema_version": "1.0",
+      "preprocessing_version": "1.0",
+      "input_dimensions": [1, 12],
+      "status": "VALIDATED"
+    },
+    {
+      "model_id": "arthroscan_rf_v1",
+      "model_version": "1.0.0",
+      "artifact": "rf_dielectric_resonance_v1.onnx",
+      "sha256": "3d9c3fae5dd0b5550a1df2775a2f5f144d2e7d73fb46d1bf5f43a85b9b0c7932",
+      "modality": "RF",
+      "feature_schema_version": "1.0",
+      "preprocessing_version": "1.0",
+      "input_dimensions": [1, 16],
+      "status": "RESEARCH"
+    }
+  ]
+}

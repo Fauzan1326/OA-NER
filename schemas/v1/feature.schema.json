@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arthroscan.ner/schemas/v1/feature.schema.json",
+  "title": "FeatureVector",
+  "description": "Extracted biomedical feature specification with complete provenance",
+  "type": "object",
+  "properties": {
+    "patient_id": { "type": "string" },
+    "session_id": { "type": "string" },
+    "modality": { "type": "string", "enum": ["IMU", "VAG", "sEMG", "RF", "CONTEXT"] },
+    "features": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "window_start_ms": { "type": "integer" },
+    "window_end_ms": { "type": "integer" },
+    "quality_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "extraction_version": { "type": "string" },
+    "schema_version": { "type": "string" }
+  },
+  "required": ["patient_id", "session_id", "modality", "features", "schema_version"]
+}

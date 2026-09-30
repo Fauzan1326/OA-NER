@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arthroscan.ner/schemas/v1/patient.schema.json",
+  "title": "PatientRecord",
+  "description": "Patient demographic, consent, and occupational exposure schema",
+  "type": "object",
+  "properties": {
+    "patient_id": { "type": "string" },
+    "study_id": { "type": "string" },
+    "age": { "type": "integer", "minimum": 0, "maximum": 130 },
+    "gender": { "type": "string", "enum": ["MALE", "FEMALE", "OTHER", "PREFER_NOT_TO_SAY"] },
+    "affected_knee": { "type": "string", "enum": ["LEFT", "RIGHT", "BILATERAL", "NONE"] },
+    "consent_status": { "type": "string", "enum": ["GRANTED", "WITHDRAWN", "PENDING", "DEMO"] },
+    "consent_version": { "type": "string" },
+    "consent_timestamp": { "type": "integer" },
+    "operator_id": { "type": "string" },
+    "occupation_type": { "type": "string" },
+    "years_of_exposure": { "type": "number", "minimum": 0 },
+    "heavy_lifting": { "type": "boolean" },
+    "kneeling_squatting": { "type": "boolean" },
+    "stair_climbing": { "type": "boolean" },
+    "schema_version": { "type": "string" }
+  },
+  "required": ["patient_id", "consent_status", "schema_version"]
+}
