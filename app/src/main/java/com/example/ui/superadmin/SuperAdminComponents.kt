@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import com.example.R
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -102,7 +104,7 @@ fun SuperAdminTopAppBar(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.weight(1f, fill = false)
+                modifier = Modifier.weight(1f)
             ) {
                 Surface(
                     shape = RoundedCornerShape(8.dp),
@@ -110,11 +112,11 @@ fun SuperAdminTopAppBar(
                     modifier = Modifier.size(34.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = Icons.Default.Security,
-                            contentDescription = null,
-                            tint = SaPurple,
-                            modifier = Modifier.size(20.dp)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_arthroscan_emblem),
+                            contentDescription = "ARTHROSCAN Logo",
+                            modifier = Modifier.size(24.dp),
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -137,34 +139,17 @@ fun SuperAdminTopAppBar(
                         )
                         Surface(
                             shape = RoundedCornerShape(20.dp),
-                            color = if (isDark) Color(0xFF1E293B) else Color(0xFFF1F5F9),
-                            border = BorderStroke(0.5.dp, SaBorder)
+                            color = SaPurple.copy(alpha = 0.12f)
                         ) {
                             Text(
                                 text = "SIH26004",
                                 style = TextStyle(
                                     fontFamily = JetBrainsMonoFontFamily,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 9.sp,
-                                    color = SaTextSecondary
-                                ),
-                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.5.dp)
-                            )
-                        }
-                        Surface(
-                            shape = RoundedCornerShape(20.dp),
-                            color = SaPurple.copy(alpha = 0.12f),
-                            border = BorderStroke(0.5.dp, SaPurple.copy(alpha = 0.35f))
-                        ) {
-                            Text(
-                                text = "SUPER ADMIN",
-                                style = TextStyle(
-                                    fontFamily = SpaceGroteskFontFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 9.sp,
+                                    fontSize = 9.5.sp,
                                     color = SaPurple
                                 ),
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.5.dp)
+                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
                             )
                         }
                     }
@@ -182,7 +167,7 @@ fun SuperAdminTopAppBar(
                 }
             }
 
-            // RIGHT: Theme toggle, Diagnostics, Logout, Clickable Profile Avatar
+            // RIGHT: Theme toggle, Logout, Clickable Profile Avatar
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -195,18 +180,6 @@ fun SuperAdminTopAppBar(
                         imageVector = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode,
                         contentDescription = "Toggle Light/Dark Theme",
                         tint = if (isDark) SaGold else Color(0xFF64748B),
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-
-                IconButton(
-                    onClick = onOpenDiagnostics,
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Analytics,
-                        contentDescription = "System Diagnostics",
-                        tint = SaCyan,
                         modifier = Modifier.size(18.dp)
                     )
                 }

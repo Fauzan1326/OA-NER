@@ -31,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.painterResource
+import com.example.R
 import com.example.admin.DeviceConnectionStatus
 import com.example.auth.UserAccount
 import com.example.ui.components.UserAvatarStorage
@@ -61,13 +63,13 @@ val AdminTextMain @Composable get() = if (ThemeManager.isDarkMode.value) Color(0
 
 /**
  * Modern, responsive Admin Top App Bar with ASHA Design Language.
- * Includes Left Biotech Icon, Title, Subtitle, SIH26004 & ADMIN badges,
- * Theme Toggle, Diagnostics, Logout, and Clickable Profile Photo.
+ * Includes Left Biotech Emblem Logo, Title, Subtitle, SIH26004 badge,
+ * Theme Toggle, Logout, and Clickable Profile Photo.
  */
 @Composable
 fun AdminTopAppBar(
     admin: UserAccount,
-    onOpenDiagnostics: () -> Unit,
+    onOpenDiagnostics: () -> Unit = {},
     onOpenProfile: () -> Unit = {},
     onLogout: () -> Unit
 ) {
@@ -92,7 +94,7 @@ fun AdminTopAppBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // LEFT: Icon + Titles & Badges
+            // LEFT: Biotech Emblem Icon + Titles & Badges
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -104,11 +106,11 @@ fun AdminTopAppBar(
                     modifier = Modifier.size(34.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = Icons.Default.AdminPanelSettings,
-                            contentDescription = null,
-                            tint = AdminBlue,
-                            modifier = Modifier.size(20.dp)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_arthroscan_emblem),
+                            contentDescription = "ARTHROSCAN Logo",
+                            modifier = Modifier.size(24.dp),
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -131,34 +133,17 @@ fun AdminTopAppBar(
                         )
                         Surface(
                             shape = RoundedCornerShape(20.dp),
-                            color = if (isDark) Color(0xFF1E293B) else Color(0xFFF1F5F9),
-                            border = BorderStroke(0.5.dp, AdminBorder)
+                            color = AdminBlue.copy(alpha = 0.12f)
                         ) {
                             Text(
                                 text = "SIH26004",
                                 style = TextStyle(
                                     fontFamily = JetBrainsMonoFontFamily,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 9.sp,
-                                    color = AdminTextDim
-                                ),
-                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.5.dp)
-                            )
-                        }
-                        Surface(
-                            shape = RoundedCornerShape(20.dp),
-                            color = AdminBlue.copy(alpha = 0.12f),
-                            border = BorderStroke(0.5.dp, AdminBlue.copy(alpha = 0.35f))
-                        ) {
-                            Text(
-                                text = "ADMIN",
-                                style = TextStyle(
-                                    fontFamily = SpaceGroteskFontFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 9.sp,
+                                    fontSize = 9.5.sp,
                                     color = AdminBlue
                                 ),
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.5.dp)
+                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
                             )
                         }
                     }
@@ -176,7 +161,7 @@ fun AdminTopAppBar(
                 }
             }
 
-            // RIGHT: Theme toggle, Diagnostics, Logout, Clickable Profile Avatar
+            // RIGHT: Theme toggle, Logout, Clickable Profile Avatar (Matching Asha Worker)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -189,18 +174,6 @@ fun AdminTopAppBar(
                         imageVector = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode,
                         contentDescription = "Toggle Light/Dark Theme",
                         tint = if (isDark) AdminAmber else Color(0xFF64748B),
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-
-                IconButton(
-                    onClick = onOpenDiagnostics,
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Build,
-                        contentDescription = "Technical Diagnostics",
-                        tint = AdminCyan,
                         modifier = Modifier.size(18.dp)
                     )
                 }

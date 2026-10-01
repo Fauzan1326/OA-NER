@@ -1,13 +1,20 @@
 package com.example.ui.superadmin
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -15,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -63,9 +71,6 @@ fun SuperAdminControlPlaneScreen(
                     onOpenProfile = { currentTab = SuperAdminTab.PROFILE },
                     onLogout = onLogout
                 )
-
-                // Compact Governance Sub-Banner
-                SuperAdminCompactBanner()
 
                 // Section 7: Horizontally Scrollable Tabs directly below top bar
                 ScrollableTabRow(
@@ -177,110 +182,209 @@ fun SuperAdminOverviewScreen(
 ) {
     val kpis = remember { repository.computeSuperAdminKpis(superAdmin) }
 
+    val infiniteTransition = rememberInfiniteTransition(label = "saPulse")
+    val pulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.45f,
+        targetValue = 1.0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1200),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "saPulseAlpha"
+    )
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(SaDarkBg)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+            .padding(horizontal = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Section 1: ASHA-Style Hero Card
+        // ==============================================================
+        // 1. OPERATOR BANNER & REAL-TIME CONNECTIVITY (ASHA STYLE)
+        // ==============================================================
         item {
-            Surface(
-                shape = RoundedCornerShape(14.dp),
-                color = SaCardBg,
-                border = BorderStroke(1.dp, SaBorder),
-                shadowElevation = 1.dp,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+            Spacer(modifier = Modifier.height(2.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Column {
-                            Text(
-                                text = "SUPER ADMIN ROOT CONTROL PLANE",
-                                style = TextStyle(
-                                    fontFamily = SoraFontFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 15.sp,
-                                    color = SaTextPrimary
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = SaPurple.copy(alpha = 0.12f),
+                            modifier = Modifier.size(42.dp),
+                            shadowElevation = 1.dp
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.AdminPanelSettings,
+                                    contentDescription = null,
+                                    tint = SaPurple,
+                                    modifier = Modifier.size(24.dp)
                                 )
-                            )
+                            }
+                        }
+
+                        Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = superAdmin.fullName,
+                                    style = TextStyle(
+                                        fontFamily = SoraFontFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        letterSpacing = (-0.1).sp,
+                                        color = SaTextPrimary
+                                    )
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = SaPurple.copy(alpha = 0.15f)
+                                ) {
+                                    Text(
+                                        text = "SUPER ADMIN",
+                                        style = TextStyle(
+                                            fontFamily = JetBrainsMonoFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 9.5.sp,
+                                            color = SaPurple
+                                        ),
+                                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
+                                    )
+                                }
+                            }
                             Text(
-                                text = "System & Security Governance, User Administration & Protocol Oversight",
+                                text = "CONSORTIUM GOVERNANCE & OVERSIGHT",
                                 style = TextStyle(
                                     fontFamily = SpaceGroteskFontFamily,
-                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 10.sp,
+                                    letterSpacing = 0.5.sp,
                                     color = SaTextSecondary
                                 )
                             )
                         }
+                    }
 
-                        Surface(
-                            shape = RoundedCornerShape(20.dp),
-                            color = SaPurple.copy(alpha = 0.12f),
-                            border = BorderStroke(1.dp, SaPurple.copy(alpha = 0.35f))
+                    // Right: Authority Level
+                    Column(horizontalAlignment = Alignment.End) {
+                        Text(
+                            text = "ROOT",
+                            style = TextStyle(
+                                fontFamily = JetBrainsMonoFontFamily,
+                                fontSize = 10.sp,
+                                color = SaTextSecondary
+                            )
+                        )
+                        Text(
+                            text = "LEVEL 4",
+                            style = TextStyle(
+                                fontFamily = JetBrainsMonoFontFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = SaPurple
+                            )
+                        )
+                    }
+                }
+
+                // Live Telemetry Status Pills Strip
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    // Pill 1: Root Level 4
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = SaPurple.copy(alpha = 0.12f)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(7.dp)
+                                    .clip(CircleShape)
+                                    .background(SaPurple.copy(alpha = pulseAlpha))
+                            )
                             Text(
                                 text = "ROOT LEVEL 4",
                                 style = TextStyle(
                                     fontFamily = JetBrainsMonoFontFamily,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 9.5.sp,
+                                    fontSize = 10.sp,
+                                    letterSpacing = 0.4.sp,
                                     color = SaPurple
-                                ),
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                                )
                             )
                         }
                     }
 
-                    HorizontalDivider(color = SaBorder, thickness = 0.7.dp)
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    // Pill 2: Sync 100%
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = SaCyan.copy(alpha = 0.12f)
                     ) {
                         Row(
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Public,
+                                imageVector = Icons.Default.CloudDone,
                                 contentDescription = null,
                                 tint = SaCyan,
-                                modifier = Modifier.size(14.dp)
+                                modifier = Modifier.size(13.dp)
                             )
                             Text(
-                                text = "Consortium Protocol: AMCH-NER-ETH-2026-081B",
-                                style = TextStyle(
-                                    fontFamily = SpaceGroteskFontFamily,
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 11.5.sp,
-                                    color = SaTextPrimary
-                                )
-                            )
-                        }
-
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = SaGreen.copy(alpha = 0.12f)
-                        ) {
-                            Text(
-                                text = "TAMPER EVIDENT",
+                                text = "SYNC 100%",
                                 style = TextStyle(
                                     fontFamily = JetBrainsMonoFontFamily,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 9.5.sp,
-                                    color = SaGreen
-                                ),
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                    fontSize = 10.sp,
+                                    letterSpacing = 0.4.sp,
+                                    color = SaCyan
+                                )
+                            )
+                        }
+                    }
+
+                    // Pill 3: AMCH Protocol
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = SaCardBg,
+                        border = BorderStroke(1.dp, SaBorder)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.MilitaryTech,
+                                contentDescription = null,
+                                tint = SaTextSecondary,
+                                modifier = Modifier.size(13.dp)
+                            )
+                            Text(
+                                text = "AMCH Protocol",
+                                style = TextStyle(
+                                    fontFamily = JetBrainsMonoFontFamily,
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 10.sp,
+                                    color = SaTextSecondary
+                                )
                             )
                         }
                     }
@@ -288,17 +392,440 @@ fun SuperAdminOverviewScreen(
             }
         }
 
-        // Section 3: Audit Chain Card right on the overview dashboard
+        // ==============================================================
+        // 2. CONSORTIUM CENTRAL ALLOCATION: HERO FOCUS CARD (ASHA STYLE)
+        // ==============================================================
         item {
-            SuperAdminAuditChainCard(
-                integrityStatus = "VERIFIED",
-                totalRecords = kpis.totalAuditEventsLogged,
-                latestHash = "a4f89b12c3d4e5f67890abcdef1234567890abcdef",
-                tamperStatus = "Tamper Evident"
-            )
+            Surface(
+                shape = RoundedCornerShape(18.dp),
+                color = SaCardBg,
+                border = BorderStroke(1.dp, SaBorder),
+                shadowElevation = 1.dp,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(15.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Allocated Center Title
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    text = "GOVERNANCE AUTHORITY",
+                                    style = TextStyle(
+                                        fontFamily = SpaceGroteskFontFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 10.sp,
+                                        letterSpacing = 0.8.sp,
+                                        color = SaTextSecondary
+                                    )
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.Verified,
+                                    contentDescription = null,
+                                    tint = SaCyan,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                            }
+                            Text(
+                                text = superAdmin.assignedCenter.ifBlank { "Consortium Central HQ" },
+                                style = TextStyle(
+                                    fontFamily = SoraFontFamily,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    color = SaTextPrimary
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.PinDrop,
+                                    contentDescription = null,
+                                    tint = SaCyan,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Text(
+                                    text = superAdmin.assignedRegion.ifBlank { "North East Region (Assam & NER)" },
+                                    style = TextStyle(
+                                        fontFamily = SpaceGroteskFontFamily,
+                                        fontSize = 11.5.sp,
+                                        color = SaTextSecondary
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = SaPurple.copy(alpha = 0.12f),
+                            modifier = Modifier.size(36.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.AccountBalance,
+                                    contentDescription = null,
+                                    tint = SaPurple,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    // Zone Deployment Progress
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = SaSurfaceBg.copy(alpha = 0.85f),
+                        border = BorderStroke(0.8.dp, SaBorder),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(11.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Groups,
+                                        contentDescription = null,
+                                        tint = SaPurple,
+                                        modifier = Modifier.size(15.dp)
+                                    )
+                                    Text(
+                                        text = "Zone Deployment Progress",
+                                        style = TextStyle(
+                                            fontFamily = SpaceGroteskFontFamily,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 12.sp,
+                                            color = SaTextSecondary
+                                        )
+                                    )
+                                }
+                                Text(
+                                    text = "${kpis.totalDeploymentZones} / 8 Active Zones (100%)",
+                                    style = TextStyle(
+                                        fontFamily = JetBrainsMonoFontFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.5.sp,
+                                        color = SaTextPrimary
+                                    )
+                                )
+                            }
+
+                            // Dual gradient progress bar
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(8.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(SaBorder)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.92f)
+                                        .fillMaxHeight()
+                                        .background(
+                                            Brush.horizontalGradient(
+                                                listOf(SaPurple, SaCyan)
+                                            )
+                                        )
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "${kpis.totalHealthCenters} Rural Health Centers",
+                                    style = TextStyle(
+                                        fontFamily = JetBrainsMonoFontFamily,
+                                        fontSize = 10.sp,
+                                        color = SaTextSecondary
+                                    )
+                                )
+                                Text(
+                                    text = "Target: 8 Districts",
+                                    style = TextStyle(
+                                        fontFamily = JetBrainsMonoFontFamily,
+                                        fontSize = 10.sp,
+                                        color = SaTextSecondary
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    // Next Scientific Protocol Governance Card with Big CTA
+                    Surface(
+                        shape = RoundedCornerShape(14.dp),
+                        color = SaSurfaceBg,
+                        border = BorderStroke(1.dp, SaPurple.copy(alpha = 0.22f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(13.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(7.dp)
+                                            .clip(CircleShape)
+                                            .background(SaPurple.copy(alpha = pulseAlpha))
+                                    )
+                                    Text(
+                                        text = "PROTOCOL INTEGRITY STATUS",
+                                        style = TextStyle(
+                                            fontFamily = JetBrainsMonoFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 10.sp,
+                                            letterSpacing = 0.5.sp,
+                                            color = SaPurple
+                                        )
+                                    )
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = SaGreen.copy(alpha = 0.15f)
+                                ) {
+                                    Text(
+                                        text = "VERIFIED",
+                                        style = TextStyle(
+                                            fontFamily = JetBrainsMonoFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 9.5.sp,
+                                            color = SaGreen
+                                        ),
+                                        modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                    Text(
+                                        text = "AMCH-NER-ETH-2026-081B",
+                                        style = TextStyle(
+                                            fontFamily = SoraFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 16.sp,
+                                            color = SaTextPrimary
+                                        )
+                                    )
+                                    Text(
+                                        text = "Frozen Thresholds • Zero Drift Invariant",
+                                        style = TextStyle(
+                                            fontFamily = SpaceGroteskFontFamily,
+                                            fontSize = 11.5.sp,
+                                            color = SaTextSecondary
+                                        )
+                                    )
+                                }
+
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text(
+                                        text = "STATUS",
+                                        style = TextStyle(
+                                            fontFamily = JetBrainsMonoFontFamily,
+                                            fontSize = 9.5.sp,
+                                            color = SaTextSecondary
+                                        )
+                                    )
+                                    Text(
+                                        text = "SECURED",
+                                        style = TextStyle(
+                                            fontFamily = JetBrainsMonoFontFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 13.5.sp,
+                                            color = SaGreen
+                                        )
+                                    )
+                                }
+                            }
+
+                            // ACCESS SCIENTIFIC GOVERNANCE (Gradient CTA)
+                            Button(
+                                onClick = { onNavigateToTab(SuperAdminTab.GOVERNANCE) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = SaPurple
+                                ),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(
+                                            Brush.horizontalGradient(
+                                                listOf(SaPurple, Color(0xFF6D28D9), SaCyan)
+                                            )
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Gavel,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(19.dp),
+                                            tint = Color.White
+                                        )
+                                        Spacer(modifier = Modifier.width(7.dp))
+                                        Text(
+                                            text = "ACCESS SCIENTIFIC GOVERNANCE",
+                                            style = TextStyle(
+                                                fontFamily = SpaceGroteskFontFamily,
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 13.sp,
+                                                letterSpacing = 0.5.sp,
+                                                color = Color.White
+                                            )
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = Color.White
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        // Operational View Switcher Banner
+        // ==============================================================
+        // 3. GOVERNANCE METRICS (2x2 GRID MATCHING ASHA WORKER)
+        // ==============================================================
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Governance & Audit Metrics",
+                        style = TextStyle(
+                            fontFamily = SoraFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = SaTextPrimary
+                        )
+                    )
+                    Text(
+                        text = "TAP CARD TO INSPECT",
+                        style = TextStyle(
+                            fontFamily = JetBrainsMonoFontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 10.sp,
+                            color = SaTextSecondary
+                        )
+                    )
+                }
+
+                // 2x2 Grid (Admins, Zones, Blocks, Audit Logs)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        SaMetricTile(
+                            label = "TOTAL ADMINS",
+                            value = "${kpis.totalAdmins}",
+                            unit = "Operators",
+                            icon = Icons.Default.SupervisorAccount,
+                            iconTint = SaPurple,
+                            modifier = Modifier.weight(1f),
+                            onClick = { onNavigateToTab(SuperAdminTab.USERS) }
+                        )
+
+                        SaMetricTile(
+                            label = "ACTIVE ZONES",
+                            value = "${kpis.totalDeploymentZones}",
+                            unit = "Districts",
+                            icon = Icons.Default.Public,
+                            iconTint = SaCyan,
+                            valueColor = SaCyan,
+                            modifier = Modifier.weight(1f),
+                            onClick = { onNavigateToTab(SuperAdminTab.REGIONS) }
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        SaMetricTile(
+                            label = "SECURITY LOCK",
+                            value = "${kpis.securityViolationsBlocked}",
+                            unit = "Violations Guarded",
+                            icon = Icons.Default.GppGood,
+                            iconTint = SaGreen,
+                            valueColor = SaGreen,
+                            modifier = Modifier.weight(1f),
+                            onClick = { onNavigateToTab(SuperAdminTab.SECURITY) }
+                        )
+
+                        SaMetricTile(
+                            label = "AUDIT EVENTS",
+                            value = "${kpis.totalAuditEventsLogged}",
+                            unit = "Tamper Evident",
+                            icon = Icons.Default.FactCheck,
+                            iconTint = SaBlue,
+                            modifier = Modifier.weight(1f),
+                            onClick = { onNavigateToTab(SuperAdminTab.AUDIT) }
+                        )
+                    }
+                }
+            }
+        }
+
+        // Section 4: Operational View Switcher Banner
         item {
             Surface(
                 shape = RoundedCornerShape(14.dp),
@@ -352,74 +879,17 @@ fun SuperAdminOverviewScreen(
             }
         }
 
-        // Top KPI Cards Row (2-column responsive)
+        // Section 5: Audit Chain Card right on the overview dashboard
         item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "REGISTERED USERS",
-                    value = "${kpis.totalRegisteredUsers}",
-                    subtext = "${kpis.totalAdmins} Admins • ${kpis.totalAshaWorkers} ASHA",
-                    tint = SaPurple
-                )
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "DEPLOYMENT ZONES",
-                    value = "${kpis.totalDeploymentZones}",
-                    subtext = "${kpis.totalHealthCenters} Rural Health Centers",
-                    tint = SaCyan
-                )
-            }
+            SuperAdminAuditChainCard(
+                integrityStatus = "VERIFIED",
+                totalRecords = kpis.totalAuditEventsLogged,
+                latestHash = "a4f89b12c3d4e5f67890abcdef1234567890abcdef",
+                tamperStatus = "Tamper Evident"
+            )
         }
 
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "TOTAL SCREENINGS",
-                    value = "${kpis.totalScreeningsAcrossAllZones}",
-                    subtext = "Across all NER Clusters",
-                    tint = SaGreen
-                )
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "GOVERNED VERSION",
-                    value = "v1.0-FROZEN",
-                    subtext = "Seed 26004L • Schema v1.0",
-                    tint = SaGold
-                )
-            }
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "AUDIT EVENTS",
-                    value = "${kpis.totalAuditEventsLogged}",
-                    subtext = "SHA-256 Tamper-Evident",
-                    tint = SaGreen
-                )
-                KpiCard(
-                    modifier = Modifier.weight(1f),
-                    label = "FABRICATION BLOCKS",
-                    value = "${kpis.securityViolationsBlocked}",
-                    subtext = "Scientific Invariant Guard",
-                    tint = if (kpis.securityViolationsBlocked > 0) SaRed else SaCyan
-                )
-            }
-        }
-
-        // Quick Navigation Grid
+        // Section 6: Quick Navigation Grid
         item {
             Text(
                 text = "ROOT GOVERNANCE MODULES",
@@ -607,4 +1077,79 @@ fun SuperAdminDiagnosticsDialog(
             }
         }
     )
+}
+
+@Composable
+private fun SaMetricTile(
+    label: String,
+    value: String,
+    unit: String,
+    icon: ImageVector,
+    iconTint: Color,
+    valueColor: Color = Color.Unspecified,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = SaCardBg,
+        border = BorderStroke(1.dp, SaBorder),
+        shadowElevation = 1.dp,
+        modifier = modifier
+            .height(88.dp)
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = label,
+                    style = TextStyle(
+                        fontFamily = SpaceGroteskFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 10.5.sp,
+                        letterSpacing = 0.5.sp,
+                        color = SaTextSecondary
+                    )
+                )
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = value,
+                    style = TextStyle(
+                        fontFamily = SoraFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp,
+                        color = if (valueColor != Color.Unspecified) valueColor else SaTextPrimary
+                    )
+                )
+                Text(
+                    text = unit,
+                    style = TextStyle(
+                        fontFamily = SpaceGroteskFontFamily,
+                        fontSize = 11.sp,
+                        color = SaTextSecondary
+                    )
+                )
+            }
+        }
+    }
 }

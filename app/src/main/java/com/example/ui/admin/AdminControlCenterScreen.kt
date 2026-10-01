@@ -62,9 +62,6 @@ fun AdminControlCenterScreen(
                     onLogout = onLogout
                 )
 
-                // Compact status sub-bar
-                AdminCompactSubBar(admin = admin)
-
                 // Horizontal scrollable operational tabs
                 AdminScrollableTabs(
                     currentRoute = currentRoute,
